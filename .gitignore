@@ -1,0 +1,6 @@
+# Ignore virtual environment and Python cache files
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+EOF
