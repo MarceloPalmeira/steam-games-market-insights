@@ -1,6 +1,16 @@
-# Ignore virtual environment and Python cache files
+# Ambiente local
 .venv/
+.mplconfig/
+
+# Python
 __pycache__/
 *.pyc
+
+# Sistema
 .DS_Store
-EOF
+
+# Dados brutos grandes: baixar/posicionar localmente antes de rodar
+dataset/
+
+# Modelo binario pode ser regenerado pelo pipeline
+outputs/models/*.joblib
