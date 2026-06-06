@@ -1,0 +1,6 @@
+test,description,statistic,p_value,group_0_median,group_1_median
+Mann-Whitney U,Score comercial: jogos multiplayer vs nao multiplayer,1377274066.0,0.0,0.4458433582631248,0.49043478970076093
+Mann-Whitney U,Score comercial: jogos gratuitos vs pagos,615574825.0,0.0,0.465069202600093,0.29560153656686594
+Mann-Whitney U,Score comercial: jogos indie vs nao indie,1977259432.0,0.0,0.42512743554819715,0.46384174339985806
+Qui-quadrado,Sucesso comercial vs multiplayer,2830.5202721333208,0.0,,
+Qui-quadrado,Sucesso comercial vs gratuito,2420.7103193749763,0.0,,
