@@ -1,163 +1,186 @@
 # Steam Games Market Insights
 
-Projeto final de Ciencia de Dados para predizer e explicar sucesso comercial de jogos na Steam, apoiando decisoes de desenvolvedores indie e publishers.
+Projeto final de Ciência de Dados sobre jogos da Steam.
 
-## Problema de negocio
+A ideia é simples: usar dados públicos de jogos já publicados para entender quais características aparecem associadas a um maior sucesso comercial estimado. O foco não é prever receita real, mas apoiar decisões de produto, preço e posicionamento para desenvolvedores indie e publishers.
 
-Sou um desenvolvedor indie/publisher e quero entender como meu jogo pode performar no mercado da Steam e quais caracteristicas estao associadas a maior chance de sucesso comercial estimado.
+## Problema
+
+Um desenvolvedor ou publisher pode ter várias dúvidas antes de investir em um jogo:
+
+- vale apostar em multiplayer?
+- free-to-play parece uma boa estratégia?
+- achievements e recursos da Steam fazem diferença?
+- quais sinais aparecem com mais força nos jogos que performaram melhor?
+
+Este projeto tenta responder esse tipo de pergunta com dados, modelos e análises estatísticas.
 
 ## Dataset
 
-Fonte principal: `dataset/games.csv`, do Steam Games Dataset. O arquivo `dataset/games.json` fica disponivel como apoio, mas o pipeline usa o CSV como base principal.
+A base usada é o Steam Games Dataset, disponível no Kaggle:
 
-Como `dataset/` esta no `.gitignore`, baixe a base manualmente no Kaggle e coloque os arquivos na pasta `dataset/` antes de executar o pipeline:
+https://www.kaggle.com/datasets/fronkongames/steam-games-dataset?resource=download
 
-<https://www.kaggle.com/datasets/fronkongames/steam-games-dataset?resource=download>
+O pipeline usa principalmente:
 
-Estrutura esperada:
+text dataset/games.csv
 
-```text
-dataset/
-  games.csv
-  games.json
-```
+O arquivo dataset/games.json pode ficar na pasta como apoio, mas o CSV é a fonte principal.
 
-Durante a leitura, o cabecalho `DiscountDLC count` e tratado como duas colunas (`Discount` e `DLC count`), porque as linhas possuem 40 campos. Essa correcao acontece apenas no carregamento; os arquivos brutos em `dataset/` nao sao editados.
+Como a pasta dataset/ está no .gitignore, os dados não são enviados para o GitHub. Para rodar o projeto, baixe a base no Kaggle e deixe os arquivos assim:
 
-## Variavel-alvo
+text dataset/   games.csv   games.json
 
-`success_commercial` e uma proxy binaria de sucesso comercial, nao receita real. Ela identifica os jogos no top 30% de um score composto por:
+Durante o carregamento, o cabeçalho DiscountDLC count é tratado como duas colunas: Discount e DLC count. Essa correção acontece só no código de leitura; o CSV bruto não é alterado.
 
-- ponto medio de `Estimated owners`;
+## Variável-alvo
+
+A variável que queremos prever é:
+
+text success_commercial
+
+Ela foi criada no projeto e representa uma proxy binária de sucesso comercial estimado.
+
+Isso significa duas coisas:
+
+1. É uma aproximação, porque a base não tem receita real dos jogos.
+2. É binária, porque cada jogo fica em uma de duas classes:
+   - 1: sucesso comercial estimado;
+   - 0: não sucesso comercial estimado.
+
+A classe positiva é formada pelos jogos no top 30% de um score composto por:
+
+- ponto médio de Estimated owners;
 - total de reviews;
-- pico de jogadores simultaneos;
-- recomendacoes;
-- tempo medio de jogo.
+- pico de jogadores simultâneos;
+- recomendações;
+- tempo médio de jogo.
 
-Cada metrica passa por `log1p`, ranking percentual e media simples. As colunas usadas diretamente no alvo, e derivadas diretas delas, sao removidas das features de modelagem para evitar vazamento. A explicacao completa fica em `outputs/definicao_sucesso_comercial.md`.
+Antes de compor o score, as métricas passam por log1p e ranking percentual, para reduzir o peso de valores extremos.
 
-## Estrutura
+As colunas usadas para construir o alvo, e suas derivadas diretas, são removidas das features de treino para evitar vazamento de dados. A explicação completa está em:
 
-- `src/`: codigo modular do pipeline.
-- `dataset/`: dados brutos locais, nao versionados no GitHub.
-- `outputs/figures/`: graficos gerados.
-- `outputs/tables/`: tabelas, metricas, testes e importancias.
-- `outputs/models/`: modelo salvo localmente.
-- `outputs/relatorio_base.md`: base textual para o relatorio final.
-- `outputs/insights_acionaveis.md`: recomendacoes praticas.
-- `outputs/roteiro_apresentacao.md`: roteiro para pitch e perguntas tecnicas.
+text outputs/definicao_sucesso_comercial.md
 
-## Instalacao
+## Estrutura do projeto
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python3 -m pip install -r requirements.txt
-```
+text src/                         código principal do pipeline app/                         aplicação Streamlit dataset/                     dados locais, não versionados outputs/figures/             gráficos gerados outputs/tables/              tabelas, testes, métricas e importâncias outputs/models/              modelo salvo localmente outputs/app_reports/         saídas geradas pelo app Streamlit outputs/relatorio_base.md    base textual do relatório final outputs/insights_acionaveis.md outputs/roteiro_apresentacao.md
 
-## Execucao
+## Instalação
 
-```bash
-python3 -m src.main
-```
+bash python3 -m venv .venv source .venv/bin/activate python3 -m pip install -r requirements.txt
 
-## Aplicacao Streamlit
+No Windows, a ativação do ambiente virtual costuma ser:
 
-O projeto tambem possui uma aplicacao simples para explorar o dataset, treinar modelos selecionados e gerar artefatos de apoio em `outputs/app_reports/`.
+bash .venv\Scripts\activate
 
-```bash
-streamlit run app/streamlit_app.py
-```
+## Rodando o pipeline principal
 
-Alternativa mais reprodutivel usando o Python do ambiente virtual:
+Com o ambiente ativado e o dataset na pasta correta:
 
-```bash
-./.venv/bin/python -m streamlit run app/streamlit_app.py
-```
+bash python3 -m src.main
 
-No Windows, o equivalente e:
+Esse comando gera os principais arquivos em outputs/, incluindo métricas, tabelas, figuras, relatório-base e insights.
 
-```bash
-.venv\Scripts\python -m streamlit run app/streamlit_app.py
-```
+## Aplicação Streamlit
 
-A aplicacao carrega `dataset/games.csv` por padrao e tambem aceita upload de CSV. Se o arquivo local nao existir, ela mostra o link do Kaggle e orienta onde posicionar a base.
+Também há uma aplicação local em Streamlit para explorar o projeto de forma interativa.
 
-Modelos disponiveis no app:
+Ela permite:
 
-- LogisticRegression;
-- DecisionTreeClassifier;
-- RandomForestClassifier;
-- ExtraTreesClassifier;
-- HistGradientBoostingClassifier.
+- carregar games.csv ou um CSV compatível;
+- selecionar modelos;
+- treinar e comparar classificadores;
+- visualizar métricas e gráficos;
+- gerar artefatos em outputs/app_reports/;
+- gerar, opcionalmente, um relatório auxiliar com Gemini.
 
-O app usa a mesma definicao de `success_commercial` do pipeline principal. Colunas usadas diretamente no alvo, incluindo `Positive`, `Negative`, `positive_ratio` e derivadas diretas de reviews, nao entram nas features de treino.
+Para rodar:
 
-### Relatorio automatizado com Gemini
+bash streamlit run app/streamlit_app.py
 
-A geracao com Gemini e opcional. A aplicacao funciona normalmente sem chave de API; nesse caso, apenas a geracao do relatorio fica desativada.
+Ou usando diretamente o Python do ambiente virtual:
+
+bash ./.venv/bin/python -m streamlit run app/streamlit_app.py
+
+No Windows:
+
+bash .venv\Scripts\python -m streamlit run app/streamlit_app.py
+
+A aplicação usa a mesma definição de success_commercial do pipeline principal e mantém os mesmos cuidados contra vazamento de dados.
+
+## Gemini
+
+A integração com Gemini é opcional.
+
+O app funciona sem chave de API. Nesse caso, apenas a geração do relatório com LLM fica desativada.
 
 Para habilitar:
 
-```bash
-cp .env.example .env
-```
+bash cp .env.example .env
 
-Depois edite `.env` e preencha:
+Depois edite o .env:
 
-```text
-GEMINI_API_KEY=sua_chave_aqui
-```
+text GEMINI_API_KEY=sua_chave_aqui
 
-O arquivo `.env` nao deve ser versionado; ele fica no `.gitignore`.
+O arquivo .env não deve ser versionado.
 
-O Gemini so e chamado quando o usuario clica no botao de gerar relatorio. O app envia apenas informacoes agregadas, como metricas, nomes dos modelos, melhor modelo, principais features e resumo do alvo. Dados brutos do dataset nao sao enviados. O relatorio Gemini e um artefato extra/auxiliar; o relatorio SBC deve se basear principalmente nos outputs revisados do projeto: `outputs/relatorio_base.md`, `outputs/definicao_sucesso_comercial.md`, `outputs/insights_acionaveis.md`, `outputs/model_metrics.csv` e `outputs/tables/statistical_tests.csv`.
+O Gemini só é chamado quando o usuário clica no botão de gerar relatório. O app envia apenas informações agregadas, como métricas, nomes dos modelos, melhor modelo, principais features e resumo do alvo. O dataset bruto não é enviado.
 
-## Modelos utilizados
+Esse relatório é um artefato auxiliar. O relatório final do projeto deve se basear principalmente nos outputs revisados, como:
 
-- Regressao Logistica;
-- Arvore de Decisao;
+text outputs/relatorio_base.md outputs/definicao_sucesso_comercial.md outputs/insights_acionaveis.md outputs/model_metrics.csv outputs/tables/statistical_tests.csv
+
+## Modelos avaliados
+
+O projeto compara modelos de diferentes níveis de complexidade:
+
+- Regressão Logística;
+- Árvore de Decisão;
 - Random Forest;
 - ExtraTreesClassifier;
 - HistGradientBoostingClassifier.
 
-XGBoost e LightGBM sao opcionais: se estiverem instalados, o pipeline testa; se nao estiverem, sao pulados sem quebrar a execucao.
+XGBoost e LightGBM são opcionais. Se estiverem instalados, o pipeline pode testá-los; se não estiverem, eles são ignorados sem quebrar a execução.
 
-## Melhor modelo atual
+## Melhor resultado atual
 
-O melhor modelo atual e `hist_gradient_boosting`, com aproximadamente:
+O melhor modelo atual é o hist_gradient_boosting.
 
-- Accuracy: 0.8285;
-- Precision: 0.6793;
-- Recall: 0.8115;
-- F1-score: 0.7395;
-- ROC-AUC: 0.9155.
+Métricas no conjunto de teste:
 
-As metricas completas ficam em `outputs/model_metrics.csv`.
+text Accuracy:  0.8285 Precision: 0.6793 Recall:    0.8115 F1-score:  0.7395 ROC-AUC:   0.9155
 
-## Como interpretar os resultados
+As métricas completas ficam em:
 
-O modelo identifica padroes associados ao sucesso comercial historico na Steam. Os resultados devem apoiar decisoes de produto, preco, posicionamento e marketing, mas nao garantem sucesso futuro. Testes estatisticos e importancias indicam associacao, nao causalidade.
+text outputs/model_metrics.csv
+
+## Como interpretar
+
+O modelo identifica padrões associados ao sucesso comercial estimado em jogos já publicados na Steam.
+
+Ele deve ser usado como apoio à decisão, não como garantia de sucesso. Os resultados ajudam a levantar hipóteses sobre produto, preço, posicionamento e recursos da Steam, mas precisam ser interpretados junto com contexto de gênero, público-alvo, orçamento e estratégia de lançamento.
+
+Também é importante lembrar:
+
+> associação não implica causalidade.
+
+Ou seja, se jogos com multiplayer aparecem com maior taxa de sucesso estimado, isso não prova que multiplayer causa sucesso. Pode haver outros fatores envolvidos, como gênero, comunidade, marketing, orçamento ou maturidade do jogo.
 
 ## Principais outputs
 
-- `outputs/model_metrics.csv`: metricas finais dos modelos no teste.
-- `outputs/tables/model_cv_metrics.csv`: validacao cruzada.
-- `outputs/tables/statistical_tests.csv`: testes estatisticos.
-- `outputs/tables/missing_values.csv`: resumo de nulos.
-- `outputs/tables/feature_importance.csv`: permutation importance do melhor modelo quando necessario.
-- `outputs/figures/`: graficos da EDA e explicabilidade.
-- `outputs/models/best_model.joblib`: melhor modelo salvo localmente.
-- `outputs/app_reports/`: metricas, figuras e relatorio automatizado gerados pela aplicacao Streamlit.
+text outputs/model_metrics.csv                 métricas finais dos modelos outputs/tables/model_cv_metrics.csv       validação cruzada outputs/tables/statistical_tests.csv      testes estatísticos outputs/tables/missing_values.csv         resumo de nulos outputs/tables/feature_importance.csv     importância de features outputs/figures/                          gráficos da EDA e dos modelos outputs/models/best_model.joblib          melhor modelo salvo localmente outputs/app_reports/                      saídas geradas pelo app Streamlit
 
-## Limitacoes
+## Limitações
 
-- A base nao possui receita real por jogo.
-- `success_commercial` e uma proxy baseada em sinais de alcance e engajamento.
-- Variaveis pos-lancamento ajudam a explicar jogos ja publicados, mas nao devem ser tratadas como garantidas antes do lancamento.
-- Pode haver viés de popularidade e exposicao da plataforma.
-- Correlação/associacao nao implica causalidade.
+A principal limitação é que a base não possui receita real por jogo. Por isso, success_commercial é uma proxy baseada em sinais públicos de alcance e engajamento.
 
-## Entrega e GitHub
+Outros cuidados:
 
-O dataset e o modelo salvo sao grandes e podem ser regenerados localmente. Para GitHub, recomenda-se versionar codigo, README, relatorios e tabelas/figuras essenciais, mantendo `dataset/`, `.venv/`, caches e modelos binarios fora do versionamento.
+- algumas variáveis refletem contexto pós-lançamento;
+- owners são estimativas em faixas;
+- popularidade e exposição na Steam podem enviesar os resultados;
+- tags e categorias podem refletir tanto posicionamento quanto popularidade;
+- os resultados indicam associação, não causalidade.
+
+Em resumo: o projeto não entrega uma fórmula de sucesso. Ele entrega um pipeline reprodutível para transformar dados públicos da Steam em evidências úteis para análise e decisão.
