@@ -1,4 +1,7 @@
 # Ambiente local
+.env
+.env.*
+!.env.example
 .venv/
 .mplconfig/
 
