@@ -4,7 +4,7 @@ Projeto final de Ciencia de Dados para predizer e explicar sucesso comercial de 
 
 ## Problema de negocio
 
-Sou um desenvolvedor indie/publisher e quero entender como meu jogo pode performar no mercado da Steam e quais caracteristicas podem aumentar sua chance de sucesso comercial.
+Sou um desenvolvedor indie/publisher e quero entender como meu jogo pode performar no mercado da Steam e quais caracteristicas estao associadas a maior chance de sucesso comercial estimado.
 
 ## Dataset
 
@@ -45,7 +45,7 @@ Cada metrica passa por `log1p`, ranking percentual e media simples. As colunas u
 - `outputs/models/`: modelo salvo localmente.
 - `outputs/relatorio_base.md`: base textual para o relatorio final.
 - `outputs/insights_acionaveis.md`: recomendacoes praticas.
-- `outputs/roteiro_apresentacao.md`: roteiro para pitch e apresentacao tecnica.
+- `outputs/roteiro_apresentacao.md`: roteiro para pitch e perguntas tecnicas.
 
 ## Instalacao
 
@@ -60,6 +60,58 @@ python3 -m pip install -r requirements.txt
 ```bash
 python3 -m src.main
 ```
+
+## Aplicacao Streamlit
+
+O projeto tambem possui uma aplicacao simples para explorar o dataset, treinar modelos selecionados e gerar artefatos de apoio em `outputs/app_reports/`.
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+Alternativa mais reprodutivel usando o Python do ambiente virtual:
+
+```bash
+./.venv/bin/python -m streamlit run app/streamlit_app.py
+```
+
+No Windows, o equivalente e:
+
+```bash
+.venv\Scripts\python -m streamlit run app/streamlit_app.py
+```
+
+A aplicacao carrega `dataset/games.csv` por padrao e tambem aceita upload de CSV. Se o arquivo local nao existir, ela mostra o link do Kaggle e orienta onde posicionar a base.
+
+Modelos disponiveis no app:
+
+- LogisticRegression;
+- DecisionTreeClassifier;
+- RandomForestClassifier;
+- ExtraTreesClassifier;
+- HistGradientBoostingClassifier.
+
+O app usa a mesma definicao de `success_commercial` do pipeline principal. Colunas usadas diretamente no alvo, incluindo `Positive`, `Negative`, `positive_ratio` e derivadas diretas de reviews, nao entram nas features de treino.
+
+### Relatorio automatizado com Gemini
+
+A geracao com Gemini e opcional. A aplicacao funciona normalmente sem chave de API; nesse caso, apenas a geracao do relatorio fica desativada.
+
+Para habilitar:
+
+```bash
+cp .env.example .env
+```
+
+Depois edite `.env` e preencha:
+
+```text
+GEMINI_API_KEY=sua_chave_aqui
+```
+
+O arquivo `.env` nao deve ser versionado; ele fica no `.gitignore`.
+
+O Gemini so e chamado quando o usuario clica no botao de gerar relatorio. O app envia apenas informacoes agregadas, como metricas, nomes dos modelos, melhor modelo, principais features e resumo do alvo. Dados brutos do dataset nao sao enviados. O relatorio Gemini e um artefato extra/auxiliar; o relatorio SBC deve se basear principalmente nos outputs revisados do projeto: `outputs/relatorio_base.md`, `outputs/definicao_sucesso_comercial.md`, `outputs/insights_acionaveis.md`, `outputs/model_metrics.csv` e `outputs/tables/statistical_tests.csv`.
 
 ## Modelos utilizados
 
@@ -96,6 +148,7 @@ O modelo identifica padroes associados ao sucesso comercial historico na Steam. 
 - `outputs/tables/feature_importance.csv`: permutation importance do melhor modelo quando necessario.
 - `outputs/figures/`: graficos da EDA e explicabilidade.
 - `outputs/models/best_model.joblib`: melhor modelo salvo localmente.
+- `outputs/app_reports/`: metricas, figuras e relatorio automatizado gerados pela aplicacao Streamlit.
 
 ## Limitacoes
 
