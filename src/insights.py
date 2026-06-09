@@ -270,61 +270,56 @@ def write_presentation_script(
     insights_text = "\n".join(f"- {item}" for item in insights)
     content = f"""# Roteiro de apresentacao
 
+## Formato oficial
+
+- 5 minutos para o pitch, com foco comercial no problema, solução e impacto.
+- 5 minutos para perguntas técnicas sobre o projeto.
+- O conteúdo técnico abaixo deve ser usado como preparação para perguntas, não como bloco cronometrado separado.
+
 ## Pitch - 5 minutos
 
-### Slide 1 - Problema e publico
-Fala sugerida: Somos um desenvolvedor indie/publisher e precisamos entender quais caracteristicas aumentam a chance de um jogo se destacar na Steam, um mercado competitivo e com muita assimetria de popularidade.
+### Slide 1 - Problema e público-alvo
+Fala sugerida: Desenvolvedores indie e publishers precisam decidir quais características priorizar a partir de evidências associadas ao destaque de jogos na Steam, um mercado competitivo e com forte assimetria de popularidade.
 
-### Slide 2 - Oportunidade
-Fala sugerida: A base Steam Games Dataset permite combinar preco, reviews, owners estimados, peak CCU, categorias, generos, tags, plataformas e achievements para transformar historico de mercado em apoio a decisao.
+### Slide 2 - Base de dados e oportunidade
+Fala sugerida: A base Steam Games Dataset, disponível no Kaggle, permite combinar preço, data de lançamento, plataformas, owners estimados, reviews, peak CCU, categorias, gêneros, tags e achievements para transformar histórico de mercado em apoio à decisão.
 
-### Slide 3 - Evidencias principais
-Fala sugerida: O sucesso foi definido como top 30% de um score composto. As evidencias acionaveis indicam diferencas relevantes para multiplayer, modelo pago/gratuito e achievements.
+### Slide 3 - Variável-alvo `success_commercial`
+Fala sugerida: Como a base não possui receita real, definimos `success_commercial` como uma proxy: jogos no top 30% de um score composto por owners estimados, total de reviews, peak CCU, recomendações e tempo médio de jogo. As colunas usadas no alvo foram removidas das features para evitar vazamento.
 
-### Slide 4 - Decisao proposta
-Fala sugerida: Recomendamos priorizar features sociais quando fizer sentido ao genero, testar estrategia de preco com cuidado e planejar achievements conectados ao progresso real do jogo.
+### Slide 4 - Evidências principais da EDA
+Fala sugerida: As comparações entre grupos indicam associações relevantes: jogos com multiplayer tiveram taxa de sucesso de 44.9%, contra 26.7% nos demais; jogos pagos tiveram taxa maior que gratuitos; jogos com achievements também tiveram taxa maior que jogos sem achievements.
 
-### Slide 5 - Impacto esperado
-Fala sugerida: O impacto esperado e melhorar decisao de produto e posicionamento, usando metricas como reviews, peak CCU, donos estimados, tempo medio de jogo e taxa de sucesso do segmento.
+### Slide 5 - Modelos e melhor resultado
+Fala sugerida: Avaliamos Regressão Logística, Árvore de Decisão, Random Forest, Extra Trees e HistGradientBoosting. O melhor modelo atual foi `{best['model']}`, com Accuracy={best['accuracy']:.4f}, Precision={best['precision']:.4f}, Recall={best['recall']:.4f}, F1={best['f1']:.4f} e ROC-AUC={best['roc_auc']:.4f}.
 
-## Apresentacao tecnica - 15 minutos
+### Slide 6 - Insights acionáveis
+Fala sugerida: Recomendamos avaliar recursos sociais quando fizerem sentido ao gênero, testar estratégia de preço sem assumir automaticamente free-to-play e planejar achievements conectados ao progresso real do jogo. Essas recomendações devem ser tratadas como hipóteses de decisão apoiadas por evidências, não como garantias de sucesso.
 
-### Slide 6 - Base e preparacao
-Mostrar origem Kaggle/Steam Games Dataset, quantidade de registros, tipos de variaveis e correcao do cabecalho `DiscountDLC count` apenas no carregamento.
+### Slide 7 - App Streamlit/Gemini como recurso extra
+Fala sugerida: O projeto também possui uma aplicação local em Streamlit para carregar o dataset, selecionar modelos, visualizar métricas/gráficos e gerar um relatório automatizado com Gemini. O Gemini é opcional via `GEMINI_API_KEY`, e o app funciona mesmo sem chave de API.
 
-### Slide 7 - Variavel-alvo
-Explicar `success_commercial`: proxy top 30% do score composto com `log1p`, ranking percentual e media simples. Destacar ausencia de receita real.
+### Slide 8 - Limitações e decisão recomendada
+Fala sugerida: A base não possui receita real, o alvo é uma proxy, algumas variáveis são pós-lançamento e as evidências indicam associação, não causalidade. A decisão recomendada é usar o modelo como apoio para priorizar produto, preço e posicionamento, sempre combinando os resultados com análise de gênero, público e estratégia de lançamento.
 
-### Slide 8 - Pre-processamento e features
-Citar parsing de datas, owners, listas de tags/generos/categorias, plataformas, preco, achievements e remocao de colunas de vazamento.
+## Preparação para perguntas técnicas
 
-### Slide 9 - EDA e inferencia
-Mostrar distribuicao do alvo, preco, reviews, multiplayer, gratuito/pago e matriz de correlacao. Citar Mann-Whitney e qui-quadrado.
+- Base: Steam Games Dataset do Kaggle, com `dataset/games.csv` como fonte principal e `dataset/` fora do versionamento.
+- Preparação: correção do cabeçalho `DiscountDLC count` no carregamento, conversão numérica, parsing de datas, parsing de owners, parsing de listas/tags/gêneros/categorias e criação de features.
+- Alvo: `success_commercial` é proxy top 30% do score composto; não é receita real.
+- Vazamento: `Estimated owners`, owners derivados, `Positive`, `Negative`, `total_reviews`, `positive_ratio`, `Peak CCU`, `Recommendations`, `Average playtime forever`, score composto e alvo foram removidos das features.
+- Inferência: Mann-Whitney U e qui-quadrado com p-valores; interpretação sempre como associação estatística.
+- Validação: split treino/teste estratificado com 20% para teste e validação cruzada estratificada com 3 folds no treino.
+- Erros: falsos positivos podem levar a expectativa excessiva de sucesso; falsos negativos podem esconder oportunidades promissoras. O modelo apoia decisão, não substitui avaliação humana.
+- App extra: Streamlit com seleção de modelos, gráficos Matplotlib, relatório Gemini opcional e outputs em `outputs/app_reports/`.
 
-### Slide 10 - Modelos
-Comparar Regressao Logistica, Arvore de Decisao, Random Forest, Extra Trees e HistGradientBoosting. XGBoost/LightGBM sao opcionais.
+## Possíveis perguntas da banca
 
-### Slide 11 - Metricas
-Melhor modelo: `{best['model']}`. Accuracy={best['accuracy']:.4f}, Precision={best['precision']:.4f}, Recall={best['recall']:.4f}, F1={best['f1']:.4f}, ROC-AUC={best['roc_auc']:.4f}.
-
-### Slide 12 - Explicabilidade
-Usar permutation importance. Variaveis mais relevantes: {top_features}. Traduzir como sinais de posicionamento, acabamento, preco e estrutura de tags.
-
-### Slide 13 - Insights acionaveis
-{insights_text}
-
-### Slide 14 - Limitacoes
-Receita real ausente, proxy de sucesso, variaveis pos-lancamento, viés de popularidade, associacao nao causal e modelo como apoio, nao garantia.
-
-### Slide 15 - Fechamento
-Retomar a linha: problema -> oportunidade -> evidencias -> decisao -> impacto esperado.
-
-## Possiveis perguntas da banca
-
-- Por que nao usar apenas Estimated owners? Porque a coluna tem faixas largas e muitos empates; o score composto usa sinais complementares.
-- Ha vazamento de dados? As colunas usadas diretamente no alvo e derivadas diretas foram removidas das features; variaveis pos-lancamento sao tratadas como explicativas.
-- O modelo serve para jogos antes do lancamento? Parcialmente. Para pre-lancamento, use apenas features disponiveis antes do lancamento; o projeto atual explica e prediz com dados historicos de jogos publicados.
-- Por que top 30%? E um corte operacional que cria uma classe positiva relevante e ainda com tamanho suficiente para treino e avaliacao.
-- Correlação implica causalidade? Nao. Os resultados indicam associacoes e ajudam a priorizar hipoteses de decisao e experimentacao.
+- Por que não usar apenas Estimated owners? Porque a coluna tem faixas largas e muitos empates; o score composto usa sinais complementares de alcance, reviews e engajamento.
+- Há vazamento de dados? As colunas usadas diretamente no alvo e derivadas diretas foram removidas das features; `positive_ratio` permanece apenas na EDA.
+- O modelo serve para jogos antes do lançamento? Parcialmente. Para uso pré-lançamento, seria necessário restringir as features a informações disponíveis antes do lançamento.
+- Por que top 30%? É um corte operacional que cria uma classe positiva relevante e ainda com tamanho suficiente para treino e avaliação.
+- Correlação implica causalidade? Não. Os resultados indicam associações e ajudam a priorizar hipóteses de decisão e experimentação.
+- O que o app acrescenta? Ele facilita exploração, comparação de modelos e geração de relatório automatizado, funcionando como recurso extra da entrega.
 """
     (OUTPUT_DIR / "roteiro_apresentacao.md").write_text(content, encoding="utf-8")
