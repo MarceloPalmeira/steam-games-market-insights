@@ -1,0 +1,116 @@
+\documentclass[aspectratio=43]{beamer}
+
+% Tema geral
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% Pacotes
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+
+% Cores principais
+\definecolor{ufalblue}{RGB}{45, 45, 170}
+\definecolor{darkred}{RGB}{170, 0, 0}
+\definecolor{darkgreen}{RGB}{0, 110, 20}
+
+% Estilo das barras
+\setbeamercolor{palette primary}{bg=ufalblue, fg=white}
+\setbeamercolor{palette secondary}{bg=ufalblue, fg=white}
+\setbeamercolor{palette tertiary}{bg=ufalblue, fg=white}
+\setbeamercolor{frametitle}{bg=ufalblue, fg=white}
+\setbeamercolor{title}{fg=white, bg=ufalblue}
+
+% Blocos
+\setbeamercolor{block title}{bg=ufalblue, fg=white}
+\setbeamercolor{block body}{bg=blue!5, fg=black}
+
+\setbeamercolor{block title alerted}{bg=darkred, fg=white}
+\setbeamercolor{block body alerted}{bg=red!8, fg=black}
+
+\setbeamercolor{block title example}{bg=darkgreen, fg=white}
+\setbeamercolor{block body example}{bg=green!8, fg=black}
+
+% Rodapé parecido com o do PDF
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.5ex,dp=1ex,left]{palette primary}
+      \hspace{1em}Disciplina de Ciência de Dados (UFAL)
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,center]{palette primary}
+      Projeto Final
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,right]{palette primary}
+      \insertframedate{}\hspace{1em}\insertframenumber{} / \inserttotalframenumber\hspace{1em}
+    \end{beamercolorbox}%
+  }
+}
+
+% Bolinhas dos itens
+\setbeamertemplate{items}[circle]
+
+% Informações da capa
+\title{Ciência de Dados: Projeto Final}
+\subtitle{Especificações da Disciplina}
+\author{Disciplina de Ciência de Dados}
+\institute{Universidade Federal de Alagoas}
+\date{19 de maio de 2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Sumário}
+  \tableofcontents
+\end{frame}
+
+\section{Diretrizes e Especificações do Projeto}
+
+\begin{frame}{Objetivos do Projeto Final}
+
+\begin{block}{Proposta Principal}
+Aplicar técnicas de Ciência de Dados em uma base de dados escolhida pela equipe,
+com foco na geração de conhecimento útil para apoiar uma tomada de decisão real
+ou simulada.
+\end{block}
+
+O trabalho é avaliado sob três pilares fundamentais:
+
+\begin{enumerate}
+  \item \textbf{Conteúdo Técnico:} domínio das etapas de análise, tratamento,
+  modelagem e avaliação dos dados.
+  \item \textbf{Aplicação Prática:} uso dos resultados para apoiar decisões.
+  \item \textbf{Comunicação em Formato de Pitch:} apresentação convincente.
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Estrutura do Documento Técnico}
+
+\begin{alertblock}{Padrão de Formatação}
+O documento deve seguir o modelo de artigos da SBC e ter limite máximo de 12 páginas.
+\end{alertblock}
+
+\begin{enumerate}
+  \item \textbf{Aplicação:} proposta, problema, justificativa e objetivos.
+  \item \textbf{Base de Dados:} origem, contexto, registros e pré-processamento.
+  \item \textbf{Resultados e Discussão:} resultados, limitações e decisão.
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Formato do Insight Acionável}
+
+\begin{exampleblock}{Estrutura Recomendada}
+Percebemos que \textit{[padrão nos dados]}. Isso sugere que
+\textit{[interpretação do problema]}. Por isso, recomendamos
+\textit{[ação prática]}.
+\end{exampleblock}
+
+\end{frame}
+
+\end{document}
