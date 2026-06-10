@@ -88,121 +88,75 @@ Marcelo Palmeira Falcão
 
 \end{frame}
 
+% ---------------------------------------------------------
+\begin{frame}{Parte 1 --- Pitch comercial}
+\centering
+\vspace{0.8cm}
+
+{\Huge\bfseries Abordagem comercial}
+
+\vspace{0.35cm}
+
+{\Large Valor do projeto para decisão de negócio}
+
+\vspace{0.45cm}
+
+\begin{minipage}{0.78\textwidth}
+\begin{exampleblock}{Foco desta parte}
+\centering
+\small
+Problema, oportunidade, principais evidências e recomendações para desenvolvedores indie e publishers.
+\end{exampleblock}
+\end{minipage}
+
+\end{frame}
 
 % ---------------------------------------------------------
-\begin{frame}{Problema, pergunta e decisão apoiada}
+\begin{frame}{Problema e oportunidade}
 \small
 
 \begin{block}{Problema de negócio}
-Ajudar desenvolvedores indie e publishers a priorizar decisões de produto, preço e posicionamento com base em evidências do mercado Steam.
+Desenvolvedores indie e publishers precisam decidir produto, preço e posicionamento em um mercado com muita competição e visibilidade desigual.
 \end{block}
 
-\vspace{0.12cm}
+\vspace{0.14cm}
 
-\begin{exampleblock}{Pergunta de pesquisa}
+\begin{exampleblock}{Pergunta de negócio}
 Quais características dos jogos publicados na Steam estão associadas a maior chance de sucesso comercial estimado?
 \end{exampleblock}
 
-\vspace{0.12cm}
+\vspace{0.14cm}
 
-\begin{block}{Decisão apoiada}
-Transformar dados históricos de jogos em um radar para levantar hipóteses de produto, mercado e comunicação, sem tratar o modelo como decisão automática.
+\begin{block}{Solução proposta}
+Usar dados históricos da Steam como um radar para priorizar hipóteses de produto, mercado e comunicação.
 \end{block}
 
-\vspace{0.10cm}
-
-\scriptsize
-A análise busca reduzir incerteza, não prometer uma fórmula de sucesso.
-
-\end{frame}
-
-
-% ---------------------------------------------------------
-\begin{frame}{Base de dados e preparação}
-\small
-\begin{columns}[T,onlytextwidth]
-  \begin{column}{0.48\textwidth}
-    \begin{block}{Steam Games Dataset}
-      \begin{itemize}
-        \item Fonte pública no Kaggle.
-        \item 122.611 jogos processados.
-        \item 49 colunas após engenharia.
-        \item Variáveis numéricas, categóricas, listas e datas.
-      \end{itemize}
-    \end{block}
-  \end{column}
-
-  \begin{column}{0.48\textwidth}
-    \begin{exampleblock}{Processo técnico}
-      Limpeza, parsing de datas/listas, tratamento de nulos, transformação de owners e criação de features.
-    \end{exampleblock}
-
-    \vspace{0.08cm}
-
-    \begin{block}{Oportunidade}
-      Converter histórico de preço, reviews, tags, recursos da Steam e engajamento em apoio à decisão.
-    \end{block}
-  \end{column}
-\end{columns}
-
 \vspace{0.08cm}
+
 \scriptsize
-A pasta \texttt{dataset/} não é versionada; a reprodução exige baixar a base no Kaggle e rodar o pipeline localmente.
+O objetivo não é prometer uma fórmula de sucesso, mas reduzir incerteza antes de decisões de produto e lançamento.
+
 \end{frame}
 
 % ---------------------------------------------------------
-\begin{frame}{Variável-alvo: \texttt{success\_commercial}}
+\begin{frame}{Evidências principais}
 \small
 \begin{columns}[T,onlytextwidth]
-  \begin{column}{0.48\textwidth}
-    \begin{block}{Definição}
-      Proxy binária de sucesso comercial estimado, \textbf{não receita real}.
-    \end{block}
+  \begin{column}{0.42\textwidth}
+    \textbf{O que apareceu com mais força}
 
-    \textbf{Critério:} top 30\% do score composto por:
-    \begin{itemize}
-      \item owners estimados;
-      \item total de reviews;
-      \item peak CCU;
-      \item recomendações;
-      \item tempo médio de jogo.
-    \end{itemize}
+    \vspace{0.10cm}
 
-    \scriptsize
-    Score com \texttt{log1p} + ranking percentual.\\
-    Vazamento removido: componentes do alvo e \texttt{positive\_ratio}.
-  \end{column}
-
-  \begin{column}{0.48\textwidth}
-    \centering
-    \includegraphics[width=.88\textwidth]{images/target_distribution.png}
-
-    \vspace{0.04cm}
-    \scriptsize Classe positiva: aproximadamente 30\% da base.
-  \end{column}
-\end{columns}
-\end{frame}
-% ---------------------------------------------------------
-\begin{frame}{Hipóteses, EDA e inferência}
-\small
-\begin{columns}[T,onlytextwidth]
-  \begin{column}{0.43\textwidth}
-    \textbf{Hipóteses avaliadas}
-    \begin{itemize}
-      \item Multiplayer e recursos sociais.
-      \item Estratégia pago vs. gratuito.
-      \item Achievements e engajamento.
-      \item Tags, gêneros e categorias.
-    \end{itemize}
-
-    \vspace{0.05cm}
-
-    \textbf{Resultados observados}
     \begin{itemize}
       \item Multiplayer: 44,9\% vs. 26,7\%.
-      \item Pagos: 33,4\% vs. gratuitos: 17,6\%.
-      \item Testes: (p < 10^{-300}).
+      \item Jogos pagos: 33,4\% vs. gratuitos: 17,6\%.
+      \item Achievements: 40,1\% vs. 19,3\%.
     \end{itemize}
+
+    \vspace{0.10cm}
+
+    \scriptsize
+    Esses números não dizem que uma característica causa sucesso. Eles indicam padrões observados na base.
   \end{column}
 
   \begin{column}{0.55\textwidth}
@@ -213,66 +167,26 @@ A pasta \texttt{dataset/} não é versionada; a reprodução exige baixar a base
 
     \vspace{0.15cm}
 
-    \begin{exampleblock}{Leitura correta}
+    \begin{exampleblock}{Leitura para negócio}
       \small
-      Associação estatística no conjunto analisado, \textbf{não causalidade}.
+      Os dados ajudam a escolher quais hipóteses testar primeiro: produto social, preço e engajamento.
     \end{exampleblock}
   \end{column}
 \end{columns}
 \end{frame}
 
-% ---------------------------------------------------------
-\begin{frame}{Modelagem, validação e melhor resultado}
-\small
-\begin{columns}[T,onlytextwidth]
-  \begin{column}{0.40\textwidth}
-    \textbf{Modelos avaliados}
-    \begin{itemize}
-      \item Logistic Regression.
-      \item Decision Tree.
-      \item Random Forest.
-      \item Extra Trees.
-      \item HistGradientBoosting.
-    \end{itemize}
-
-    \vspace{0.08cm}
-
-    \textbf{Validação}
-    \begin{itemize}
-      \item Split estratificado 80/20.
-      \item Validação cruzada 3-fold.
-      \item F1 e ROC-AUC como métricas centrais.
-    \end{itemize}
-  \end{column}
-
-  \begin{column}{0.57\textwidth}
-    \centering
-    \includegraphics[width=.90\textwidth]{images/metrics_bar_chart.png}
-
-    \vspace{0.08cm}
-
-    \begin{exampleblock}{Melhor modelo}
-      \centering
-      \footnotesize
-      \textbf{HistGradientBoostingClassifier}\\
-      F1 = 0,7395 \quad ROC-AUC = 0,9155\\
-      Accuracy = 0,8285 \quad Precision = 0,6793 \quad Recall = 0,8115
-    \end{exampleblock}
-  \end{column}
-\end{columns}
-\end{frame}
 % ---------------------------------------------------------
 \begin{frame}{Insights acionáveis}
 \scriptsize
 \centering
-\textbf{Insights combinam EDA, testes estatísticos, modelagem e interpretabilidade.}
+\textbf{Transformamos resultados técnicos em recomendações práticas.}
 
 \vspace{0.12cm}
 
 \begin{columns}[T,onlytextwidth]
   \begin{column}{0.32\textwidth}
     \begin{block}{Produto social}
-      Multiplayer está associado a maior taxa de sucesso estimado.
+      Multiplayer aparece associado a maior taxa de sucesso estimado.
 
       \vspace{0.05cm}
       \textbf{Ação:} avaliar co-op, competitivo ou eventos online quando fizer sentido ao gênero.
@@ -304,6 +218,270 @@ Avaliar sucesso por reviews, peak CCU, retenção, conversão e tempo médio ap�
 \end{frame}
 
 % ---------------------------------------------------------
+\begin{frame}{Fechamento do pitch}
+\small
+
+\begin{exampleblock}{Como usar o projeto}
+Usar o modelo como um radar: ele aponta sinais de oportunidade, mas a decisão final ainda depende de gênero, público, orçamento e estratégia comercial.
+\end{exampleblock}
+
+\vspace{0.16cm}
+
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Na prática}
+      \begin{itemize}
+        \item Priorizar hipóteses de produto.
+        \item Discutir preço e posicionamento.
+        \item Comparar jogos por sinais históricos.
+        \item Apoiar conversas com banca, gestor ou publisher.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Cuidados}
+      \begin{itemize}
+        \item O alvo é uma proxy, não receita real.
+        \item O modelo não garante sucesso.
+        \item Os padrões são associações.
+        \item A análise humana continua essencial.
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+% ---------------------------------------------------------
+\begin{frame}{Parte 2 --- Apresentação técnica}
+\centering
+\vspace{0.8cm}
+
+{\Huge\bfseries Seção Técnica}
+
+\vspace{0.35cm}
+
+{\Large Base, metodologia, modelos, métricas e limitações}
+
+\vspace{0.45cm}
+
+\begin{minipage}{0.78\textwidth}
+\begin{exampleblock}{Foco desta parte}
+\centering
+\small
+Como a análise foi construída: dados, variável-alvo, prevenção de vazamento, inferência, modelagem e avaliação.
+\end{exampleblock}
+\end{minipage}
+
+\end{frame}
+
+% ---------------------------------------------------------
+\begin{frame}{Base de dados e preparação}
+\small
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Steam Games Dataset}
+      \begin{itemize}
+        \item Fonte pública no Kaggle.
+        \item 122.611 jogos processados.
+        \item 49 colunas após limpeza e engenharia.
+        \item Variáveis numéricas, categóricas, listas e datas.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.48\textwidth}
+    \begin{exampleblock}{Preparação}
+      Limpeza, parsing de datas/listas, tratamento de nulos, transformação de owners e criação de features.
+    \end{exampleblock}
+
+    \vspace{0.08cm}
+
+    \begin{block}{Features derivadas}
+      \footnotesize
+      Idade do jogo, preço, desconto, contagens de tags/gêneros/categorias, idiomas e flags de recursos da Steam.
+    \end{block}
+  \end{column}
+\end{columns}
+
+\vspace{0.08cm}
+\scriptsize
+A pasta \texttt{dataset/} não é versionada; a reprodução exige baixar a base no Kaggle e rodar o pipeline localmente.
+\end{frame}
+
+% ---------------------------------------------------------
+\begin{frame}{Variável-alvo e vazamento}
+\small
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.48\textwidth}
+    \begin{block}{\texttt{success\_commercial}}
+      Proxy binária de sucesso comercial estimado, \textbf{não receita real}.
+    \end{block}
+
+    \textbf{Critério:} top 30\% do score composto por:
+    \begin{itemize}
+      \item owners estimados;
+      \item total de reviews;
+      \item peak CCU;
+      \item recomendações;
+      \item tempo médio de jogo.
+    \end{itemize}
+
+    \scriptsize
+    O score usa \texttt{log1p} + ranking percentual para reduzir o peso de valores extremos.
+  \end{column}
+
+  \begin{column}{0.48\textwidth}
+    \centering
+    \includegraphics[width=.82\textwidth]{images/target_distribution.png}
+
+    \vspace{0.04cm}
+
+    \begin{exampleblock}{Prevenção de vazamento}
+      \scriptsize
+      Removemos do treino as variáveis usadas para criar o alvo, o score composto e a razão de reviews positivas.
+    \end{exampleblock}
+  \end{column}
+\end{columns}
+\end{frame}
+% ---------------------------------------------------------
+\begin{frame}{EDA e inferência estatística}
+\small
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.43\textwidth}
+    \textbf{Hipóteses avaliadas}
+    \begin{itemize}
+      \item Multiplayer e recursos sociais.
+      \item Estratégia pago vs. gratuito.
+      \item Achievements e engajamento.
+      \item Tags, gêneros e categorias.
+    \end{itemize}
+
+    \vspace{0.05cm}
+
+    \textbf{Testes utilizados}
+    \begin{itemize}
+      \item Mann--Whitney.
+      \item Qui-quadrado.
+      \item Resultados com (p < 10^{-300}).
+    \end{itemize}
+  \end{column}
+
+  \begin{column}{0.55\textwidth}
+    \centering
+    \includegraphics[width=.48\textwidth]{images/success_rate_multiplayer.png}
+    \hfill
+    \includegraphics[width=.48\textwidth]{images/success_rate_free_to_play.png}
+
+    \vspace{0.15cm}
+
+    \begin{exampleblock}{Interpretação}
+      \small
+      Os testes reforçam associação estatística, mas não provam causa e efeito.
+    \end{exampleblock}
+  \end{column}
+\end{columns}
+\end{frame}
+% ---------------------------------------------------------
+\begin{frame}{Modelagem e validação}
+\small
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.44\textwidth}
+    \textbf{Tipo do problema}
+    \begin{itemize}
+      \item Classificação binária supervisionada.
+      \item Classe positiva: sucesso estimado.
+    \end{itemize}
+
+    \vspace{0.05cm}
+
+    \textbf{Modelos avaliados}
+    \begin{itemize}
+      \item Logistic Regression e Decision Tree.
+      \item Random Forest e Extra Trees.
+      \item HistGradientBoostingClassifier.
+    \end{itemize}
+  \end{column}
+
+  \begin{column}{0.52\textwidth}
+    \begin{block}{Validação}
+      \begin{itemize}
+        \item Split treino/teste estratificado 80/20.
+        \item Validação cruzada estratificada 3-fold.
+        \item Semente fixa: 42.
+      \end{itemize}
+    \end{block}
+
+    \begin{exampleblock}{Por que não só accuracy?}
+      \small
+      A classe positiva tem cerca de 30\%; por isso, F1 e ROC-AUC são métricas centrais.
+    \end{exampleblock}
+  \end{column}
+\end{columns}
+\end{frame}
+% ---------------------------------------------------------
+\begin{frame}{Resultados e melhor modelo}
+\small
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.54\textwidth}
+    \centering
+    \includegraphics[width=.90\textwidth]{images/metrics_bar_chart.png}
+  \end{column}
+
+  \begin{column}{0.43\textwidth}
+    \begin{exampleblock}{Melhor modelo}
+      \centering
+      \footnotesize
+      \textbf{HistGradientBoostingClassifier}\
+      F1 = 0,7395\
+      ROC-AUC = 0,9155\
+      Accuracy = 0,8285\
+      Precision = 0,6793\
+      Recall = 0,8115
+    \end{exampleblock}
+
+    \vspace{0.08cm}
+
+    \scriptsize
+    A Random Forest teve accuracy e precision ligeiramente maiores, mas o HistGradientBoosting apresentou melhor F1 e ROC-AUC.
+  \end{column}
+\end{columns}
+\end{frame}
+% ---------------------------------------------------------
+\begin{frame}{Interpretação e limitações}
+\small
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Análise de erros}
+      \begin{itemize}
+        \item Falsos positivos: expectativa excessiva.
+        \item Falsos negativos: oportunidades ignoradas.
+        \item O modelo deve apoiar análise, não automatizar decisões.
+      \end{itemize}
+    \end{block}
+
+    \begin{block}{Limitações}
+      \begin{itemize}
+        \item Proxy, não receita real.
+        \item Variáveis pós-lançamento.
+        \item Associação não implica causalidade.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.50\textwidth}
+    \centering
+    \includegraphics[width=.76\textwidth]{images/feature_importance.png}
+
+    \vspace{0.04cm}
+    \scriptsize
+    Sinais relevantes no modelo: tags, idade, trading cards, preço e desconto.
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
 \begin{frame}{Recurso extra: app Streamlit/Gemini}
 \small
 \begin{columns}[T,onlytextwidth]
@@ -313,14 +491,14 @@ Avaliar sucesso por reviews, peak CCU, retenção, conversão e tempo médio ap�
         \item Carrega \texttt{games.csv} ou CSV compatível.
         \item Permite selecionar modelos.
         \item Exibe métricas e gráficos.
-        \item Reutiliza alvo e cuidados contra vazamento.
+        \item Demonstra o pipeline de forma interativa.
       \end{itemize}
     \end{block}
   \end{column}
 
   \begin{column}{0.46\textwidth}
-    \begin{exampleblock}{Integração com o Gemini}
-      Relatório automatizado com Gemini.\\
+    \begin{exampleblock}{Gemini opcional}
+      Relatório automatizado com Gemini.\
       A API key fica no \texttt{.env}; sem chave, o app continua funcionando, apenas sem relatório LLM.
     \end{exampleblock}
 
@@ -328,37 +506,8 @@ Avaliar sucesso por reviews, peak CCU, retenção, conversão e tempo médio ap�
 
     \begin{block}{Papel do recurso}
       \footnotesize
-      Artefato auxiliar de comunicação e demonstração local, não fonte principal da análise.
+      Artefato auxiliar para comunicação e demonstração local; não substitui o relatório técnico nem a análise principal.
     \end{block}
-  \end{column}
-\end{columns}
-\end{frame}
-
-% ---------------------------------------------------------
-\begin{frame}{Decisão recomendada e limitações}
-\small
-\begin{columns}[T,onlytextwidth]
-  \begin{column}{0.48\textwidth}
-    \begin{exampleblock}{Decisão apoiada}
-      Priorizar hipóteses de produto, preço e posicionamento com evidências do modelo e análise humana.
-    \end{exampleblock}
-
-    \begin{itemize}
-      \item Modelo como triagem, não decisão automática.
-      \item FP/FN servem como alertas para análise humana.
-      \item Proxy, não receita real.
-      \item Variáveis pós-lançamento limitam uso pré-lançamento.
-      \item Associação não implica causalidade.
-    \end{itemize}
-  \end{column}
-
-  \begin{column}{0.50\textwidth}
-    \centering
-    \includegraphics[width=.76\textwidth]{images/feature_importance.png}
-
-    \vspace{0.04cm}
-    \scriptsize
-    Features relevantes: tags, idade, trading cards, preço e desconto.
   \end{column}
 \end{columns}
 \end{frame}
